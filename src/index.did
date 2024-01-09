@@ -1,0 +1,33 @@
+type FuelPump = record {
+  id : text;
+  status : text;
+  createdAt : nat64;
+  fuelQuantity : float64;
+  updatedAt : opt nat64;
+  fuelType : text;
+  transactions : vec Transaction;
+  pumpNumber : float64;
+};
+type FuelPumpPayload = record {
+  fuelQuantity : float64;
+  fuelType : text;
+  pumpNumber : float64;
+};
+type Transaction = record {
+  quantityDispensed : float64;
+  user : principal;
+  timestamp : nat64;
+};
+type _AzleResult = variant { Ok : FuelPump; Err : text };
+type _AzleResult_1 = variant { Ok : vec FuelPump; Err : text };
+type _AzleResult_2 = variant { Ok : vec Transaction; Err : text };
+service : () -> {
+  createFuelPump : (FuelPumpPayload) -> (_AzleResult);
+  deleteFuelPump : (text) -> (_AzleResult);
+  dispenseFuel : (text, float64) -> (_AzleResult);
+  getAllFuelPumps : () -> (_AzleResult_1) query;
+  getFuelPump : (text) -> (_AzleResult) query;
+  getFuelPumpTransactions : (text) -> (_AzleResult_2) query;
+  setFuelPumpStatus : (text, text) -> (_AzleResult);
+  updateFuelPump : (text, FuelPumpPayload) -> (_AzleResult);
+}
